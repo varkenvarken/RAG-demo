@@ -1,0 +1,26 @@
+services:
+  rag:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rag-service
+    ports:
+      - "8080:8080" # Adjust the port mapping as needed
+    volumes:
+      - module_data:/data
+      - embeddings:/root/.cache
+    depends_on:
+      - chromadb
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: chromadb-service
+    ports:
+      - "8000:8000" # Adjust the port mapping as needed
+    volumes:
+      - chromadb_data:/data
+
+volumes:
+  chromadb_data:
+  module_data:
+  embeddings:
